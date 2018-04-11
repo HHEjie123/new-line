@@ -76,8 +76,8 @@ class car_pic():
                 for line in lines[lop]:
                     rho = line[0]  # µÚÒ»¸öÔªËØÊÇ¾àÀërho
                     theta = line[1]  # µÚ¶þ¸öÔªËØÊÇ½Ç¶Ètheta
-                    print(rho)
-                    print(theta)
+                    #print(rho)
+                    #print(theta)
                     if (theta < (np.pi / 4.)) or (theta > (3. * np.pi / 4.0)):  # ´¹Ö±Ö±Ïß
                         # ¸ÃÖ±ÏßÓëµÚÒ»ÐÐµÄ½»µã
                         pt1 = (int(rho / np.cos(theta)), 0)
@@ -94,7 +94,7 @@ class car_pic():
                         if (pt2[0] - pt1[0] > 0):
                             cv2.line(result, pt1, pt2, 0, 5)
                             shuipingx.append(pt1[1])
-                        print(('pt2=', pt2, 'pt1  =', pt1))
+                        #print(('pt2=', pt2, 'pt1  =', pt1))
                 # if shuipingx>0:
                 #   break
         nowiq=datetime.datetime.now()
@@ -140,7 +140,7 @@ class car_pic():
         	max1 = max(shuipingx)
         	min2 = min(shuipingx)
         
-        print('shuipilllllllllllllllllllllllllllllllllllllllllllllllllllllngx', max1, min2)
+        #print('shuipilllllllllllllllllllllllllllllllllllllllllllllllllllllngx', max1, min2)
         # imgcutshang = img[(140+max1-130):(140+max1+4), 150:550]
         imgcutshang = img[(140 + max1 - 130):(140 + max1 - 15), 200:480]
         cv2.imwrite('%s_yuanshang.jpg' % (picture), imgcutshang)
@@ -280,17 +280,17 @@ class car_pic():
         # cv2.imshow('hhhhhhhh',bnj)
         cv2.imwrite('dst.jpg', bnj.copy() * 255)
         black_area = []
-        print('regions number:', labels.max() + 1)  # 显示连通区域块数(从0开始标记)
+        #print('regions number:', labels.max() + 1)  # 显示连通区域块数(从0开始标记)
         for regio in measure.regionprops(labels):
             if (regio.area > 6000 and regio.centroid[1] < 550 and regio.centroid[1] > 100):
                 print('质 ', regio.centroid)
                 black_area.append(regio.centroid[0])
                 black_area.append(regio.centroid[1])
-                print(regio.area)
+         #       print(regio.area)
         # cv2.waitKey(0)
         # return  black_area
         if (len(black_area) > 4):
-            print(len(black_area), "      you  wen  ti")
+            print(len(black_area), "      has a problem")
             x1 = 0
             y1 = 0
             judge1 = 0
@@ -335,6 +335,7 @@ class car_pic():
 
 
             elif ((judge1 == 0 and judge2 == 1)):
+                print('start   xia  mode')
                 pp = cv2.imread(picture)
                 blackareazhixin = black_area[1]
                 img1 = pp[int(black_area[0]):280, blackareazhixin - 100:blackareazhixin + 100]
@@ -343,7 +344,7 @@ class car_pic():
                 gray1 = cv2.Canny(gray1, 50, 150, apertureSize=3)
                 g1 = (gray1[:, :] > 10)
                 pix1 = np.sum(g1)
-                print('  g1  =', np.sum(g1))
+                #print('  g1  =', np.sum(g1))
                 cv2.imshow('gray1', gray1)
                 cv2.imwrite('img1.jpg', gray1)
                 if pix1 > judgepix1:
@@ -371,8 +372,8 @@ class car_pic():
             g2 = (gray2[:, :] > 10)
             pix1 = np.sum(g1)
             pix2 = np.sum(g2)
-            print('  g1  =', np.sum(g1))
-            print('  g2  =', np.sum(g2))
+            #print('  g1  =', np.sum(g1))
+            #print('  g2  =', np.sum(g2))
             cv2.imshow('gray1', gray1)
             cv2.imshow('gray2', gray2)
             cv2.imwrite('img1.jpg', gray1)
@@ -440,7 +441,7 @@ class car_pic():
         b_pix2= []
         pline=[]
         for kl in range(1, 7):
-            print('huojia pic in picture/%d.jpg' % (kl))
+            #print('huojia pic in picture/%d.jpg' % (kl))
             shang, xia, p1, p2,line_pix = self.huojia('picture/%d.jpg' % (kl), pix, r, g, b)
             judge1, judge2, bpix1, bpix2, zhixiny=self.blackarea('picture/%d.jpg' % (kl),ppix1,ppix2)
             b_pix1.append(judge1)
