@@ -1,4 +1,4 @@
-# coding:utf-8 
+# coding:utf-8
 ## License: Apache 2.0. See LICENSE file in root directory.
 ## Copyright(c) 2017 Intel Corporation. All Rights Reserved.
 
@@ -43,7 +43,7 @@ class car_pic():
     def hough(self, picture):
         img = cv2.cvtColor(picture, cv2.COLOR_RGB2GRAY)
         # uu=rgb2gray(picture)
-        #cv2.imshow("gray", img)
+        # cv2.imshow("gray", img)
         # gradX = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx = 1, dy = 0, ksize = -1)
         # gradY = cv2.Sobel(gray, ddepth = cv2.CV_32F, dx = 0, dy = 1, ksize = -1)
 
@@ -60,9 +60,9 @@ class car_pic():
         lines = cv2.HoughLines(edges, 1, np.pi / 180, 118)  # 这里对最后一个参数使用了经验型的值
         if (lines is not None):
             for line in lines[0]:
-                line_pix=line[0]
+                line_pix = line[0]
         else:
-            line_pix=-1
+            line_pix = -1
         result = img.copy()
         shuipingx = []
         if (lines is not None):
@@ -91,12 +91,13 @@ class car_pic():
                         print(('pt2=', pt2, 'pt1  =', pt1))
                 # if shuipingx>0:
                 #   break
-        nowiq=datetime.datetime.now()
+        nowiq = datetime.datetime.now()
         if not os.path.isdir('hough'):
             os.makedirs('hough')
             print('create dir picture')
-        cv2.imwrite('hough/%s_%s_%s_%s_%s_%s.jpg'%(nowiq.year,nowiq.month,nowiq.day,nowiq.hour,nowiq.minute,nowiq.second), result)
-        return result, shuipingx,line_pix
+        cv2.imwrite('hough/%s_%s_%s_%s_%s_%s.jpg' % (
+        nowiq.year, nowiq.month, nowiq.day, nowiq.hour, nowiq.minute, nowiq.second), result)
+        return result, shuipingx, line_pix
 
     def imgread(self, picture, imgcutxia, r, g, b):
         x = (imgcutxia[:, :, 0] > r)
@@ -126,14 +127,14 @@ class car_pic():
         xia = 0
         img = cv2.imread(picture)
         imgcutshang = img[140:300, 150:550]
-        _, shuipingx,line_pix = self.hough(imgcutshang)
+        _, shuipingx, line_pix = self.hough(imgcutshang)
         if len(shuipingx) == 0:
-            max1=120
-            min2=-1
+            max1 = 120
+            min2 = -1
         else:
-        	max1 = max(shuipingx)
-        	min2 = min(shuipingx)
-        
+            max1 = max(shuipingx)
+            min2 = min(shuipingx)
+
         print('shuipilllllllllllllllllllllllllllllllllllllllllllllllllllllngx', max1, min2)
         # imgcutshang = img[(140+max1-130):(140+max1+4), 150:550]
         imgcutshang = img[(140 + max1 - 130):(140 + max1 - 15), 200:480]
@@ -144,24 +145,24 @@ class car_pic():
 
         # cv2.imwrite('%s_yuanxia.jpg' % (picture), imgcutxia)
         p1 = self.imgread(picture + 'shang', imgcutshang, r, g, b)
-        #print(picture, 'shang has  ', p1)
+        # print(picture, 'shang has  ', p1)
         if (p1 > pix):
-            #print(picture, 'shang is you')
+            # print(picture, 'shang is you')
             shang = 1
-        #else:
-            #print((picture, 'shang is wu'))
+        # else:
+        # print((picture, 'shang is wu'))
         p2 = self.imgread(picture + 'xia', imgcutxia, r, g, b)
-        #print(picture, 'xia  has  ', p2)
+        # print(picture, 'xia  has  ', p2)
         if (p2 > pix):
-            #print(picture, 'xia is you')
+            # print(picture, 'xia is you')
             xia = 1
-        #else:
-            #print((picture, 'xia is wu'))
+        # else:
+        # print((picture, 'xia is wu'))
         cv2.imwrite('%s_shang.jpg' % (picture), imgcutshang)
         cv2.imwrite('%s_xia.jpg' % (picture), imgcutxia)
-        #cv2.imwrite('maskshang.jpg', imgcutshang)
-        #cv2.imwrite('maskxia.jpg', imgcutxia)
-        return shang, xia, p1, p2,line_pix
+        # cv2.imwrite('maskshang.jpg', imgcutshang)
+        # cv2.imwrite('maskxia.jpg', imgcutxia)
+        return shang, xia, p1, p2, line_pix
 
     # Streaming loop
     def huojia_load_pipeline(self):
@@ -236,13 +237,14 @@ class car_pic():
             picname = 2
             for lm in range(picname):
                 cv2.imwrite('picture/%d.jpg' % (order), bg_removed)
-	    nowi = datetime.datetime.now()
+            nowi = datetime.datetime.now()
             if not os.path.isdir('picture1'):
                 os.makedirs('picture1')
                 print('create dir picture')
-            cv2.imwrite('picture1/%s_%s_%s_%s_%s_%s.jpg'%(nowi.year,nowi.month,nowi.day,nowi.hour,nowi.minute,nowi.second), bg_removed)
+            cv2.imwrite('picture1/%s_%s_%s_%s_%s_%s.jpg' % (
+            nowi.year, nowi.month, nowi.day, nowi.hour, nowi.minute, nowi.second), bg_removed)
             if time.clock() - pipstart > pic_time:
-                print(order,'.jpg	has taken')
+                print(order, '.jpg	has taken')
                 break
 
     def huojia_close_pipeline(self):
@@ -254,11 +256,11 @@ class car_pic():
         pix1 = []
         pix2 = []
         pix3 = []
-        pline=[]
-        #start = time.clock()
+        pline = []
+        # start = time.clock()
         for kl in range(1, 7):
             print('huojia pic in picture/%d.jpg' % (kl))
-            shang, xia, p1, p2,line_pix = self.huojia('picture/%d.jpg' % (kl), pix, r, g, b)
+            shang, xia, p1, p2, line_pix = self.huojia('picture/%d.jpg' % (kl), pix, r, g, b)
             # alist1.append([shang])
             #  alist2.append([xia])
             pix3.append(p1)
@@ -270,14 +272,14 @@ class car_pic():
         pixt = pix1 + pix2
         pix3.sort()
         # print(alist)
-        #print(pixt)
-        print(area,(pixt))
-        print(area,'line pix',pline)
+        # print(pixt)
+        print(area, (pixt))
+        print(area, 'line pix', pline)
         for vline in range(6):
-            if pline[vline]>120 or pline[vline] == -1:
-                pline[vline]=1
-            elif (120-pline[vline])>12:
-                pline[vline]=0              
+            if pline[vline] > 120 or pline[vline] == -1:
+                pline[vline] = 1
+            elif (120 - pline[vline]) > 12:
+                pline[vline] = 0
         for xpo in pixt:
             if xpo == pix3[0] or xpo == pix3[1] or xpo == pix3[2]:
                 pixt[pixt.index(xpo)] = 0
@@ -285,7 +287,7 @@ class car_pic():
                 pixt[pixt.index(xpo)] = 1
 
         # print(alist)
-        #print(pixt)
+        # print(pixt)
         last_tiem = [[pixt[0], pixt[1], pixt[2], pixt[3], pixt[4], pixt[5]],
                      [pixt[6], pixt[7], pixt[8], pixt[9], pixt[10], pixt[11]
                       ]]
@@ -307,8 +309,8 @@ class car_pic():
             return result
 
         # print(' last item',last_tiem)
-        #end = time.clock()
-        #print('cost time is', end - start)
+        # end = time.clock()
+        # print('cost time is', end - start)
         return last_tiem
 
     def middle_load_cap(self):
@@ -378,7 +380,7 @@ class car_pic():
         # plt.axis('off')
         # plt.tight_layout()
         # plt.draw()
-        #print('kkkk', class_name, ' ', x1, ' ', x2, ' ', x3, ' ', x4)
+        # print('kkkk', class_name, ' ', x1, ' ', x2, ' ', x3, ' ', x4)
         # if class_name != None :
         return x1, x2, x3, x4, class_name
 
@@ -451,19 +453,19 @@ class car_pic():
         for i in xrange(2):
             _, _ = im_detect(self.net, im)
         if area is "A":
-			im_names = ['1.jpg']
+            im_names = ['1.jpg']
         elif area is "B":
-			im_names = ['2.jpg']
+            im_names = ['2.jpg']
         elif area is "C":
-			im_names = ['3.jpg']
+            im_names = ['3.jpg']
         elif area is "D":
-			im_names = ['4.jpg']
-        #im_names = ['1.jpg', '2.jpg', '3.jpg', '4.jpg']
+            im_names = ['4.jpg']
+        # im_names = ['1.jpg', '2.jpg', '3.jpg', '4.jpg']
         self.dictf = {}
         for im_name in im_names:
             print
             '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-            #print 'Demo for data/demo/{}'.format(im_name)
+            # print 'Demo for data/demo/{}'.format(im_name)
             print(im_name)
             self.demo(self.net, im_name)
 
@@ -514,48 +516,46 @@ NETS = {'vgg16': ('VGG16',
         'zf': ('ZF',
                '3318000ZF_faster_rcnn_final.caffemodel')}
 if __name__ == '__main__':
-    qstart=time.clock()
+    qstart = time.clock()
+    """
     fastercnn_demopicture = '/home/nvidia/hjnew/hjcaff/py-faster-rcnn/data/demo/'
     tt = car_pic(fastercnn_demopicture)
     tt.middle_load_cap()
-    tt.load_model()#load fasterrcnn model
+    tt.load_model()  # load fasterrcnn model
 
-    #take middle pictur
-    tt.middle_take_cap(1)#1为拍摄序号
+    # take middle pictur
+    tt.middle_take_cap(1)  # 1为拍摄序号
     tt.middle_take_cap(2)
     tt.middle_take_cap(3)
     tt.middle_take_cap(4)
     tt.middle_close_cap()
-    #item_list就是返回结果
+    # item_list就是返回结果
     result = tt.recon("A")
-    print('A  :',result)
+    print('A  :', result)
     result = tt.recon("B")
-    print('B  :',result)
+    print('B  :', result)
     result = tt.recon("C")
-    print('C  :',result)
+    print('C  :', result)
     result = tt.recon("D")
-    print('D  :',result)
+    print('D  :', result)
     tt.huojia_load_pipeline()
-    for lll in range(1,7):
-       tt.huojia_take_pipeline(lll,0.5)#lll为拍摄序号，0.5为while 持续时间true
+    for lll in range(1, 7):
+        tt.huojia_take_pipeline(lll, 0.5)  # lll为拍摄序号，0.5为while 持续时间true
     result = tt.huop("A", 500, 70, 70, 75)
     print(result)
 
-
-    for lll in range(1,7):
-       tt.huojia_take_pipeline(lll,0.5)
+    for lll in range(1, 7):
+        tt.huojia_take_pipeline(lll, 0.5)
     result = tt.huop("B", 500, 70, 70, 75)
     print(result)
 
-
-    for lll in range(1,7):
-	   tt.huojia_take_pipeline(lll,0.5)
+    for lll in range(1, 7):
+        tt.huojia_take_pipeline(lll, 0.5)
     result = tt.huop("C", 500, 70, 70, 75)
     print(result)
 
-
-    for lll in range(1,7):
-	   tt.huojia_take_pipeline(lll,0.5)
+    for lll in range(1, 7):
+        tt.huojia_take_pipeline(lll, 0.5)
     result = tt.huop("D", 500, 70, 70, 75)
     print(result)
     tt.huojia_close_pipeline()
@@ -566,7 +566,7 @@ if __name__ == '__main__':
     result = tt.huop("D", 500, 70, 70, 75)
     print(result)
     """
-    print('cost time is    ',time.clock()-qstart)
+    print('cost time is    ', time.clock() - qstart)
 
 
 
